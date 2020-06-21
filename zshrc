@@ -51,6 +51,7 @@ if [ -z $DOTENV_LOADED ]; then
     export GCLOUD_PATH="/google-cloud-sdk"
 
     export PYTHON_CONFIGURE_OPTS="--enable-shared"
+    export CLOUDSDK_PYTHON_SITEPACKAGES=1
 
     if type nvim >/dev/null 2>&1; then
         export VIM=$(which nvim)
@@ -68,7 +69,7 @@ if [ -z $DOTENV_LOADED ]; then
     else
         export VIM=$(which vi)
     fi
-
+    export PROGRAMMING=$HOME/Documents/develop
     export EDITOR=$VIM
     export VISUAL=$VIM
     export PAGER=$(which less)
@@ -104,7 +105,7 @@ if [ -z $DOTENV_LOADED ]; then
     fi
 
     export TERM="tmux-256color"
-    export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:/usr/local/share/npm/bin:/usr/local/go/bin:/opt/local/bin:$GOBIN:$HOME/.cargo/bin:$GCLOUD_PATH/bin:$PATH"
+    export PATH="/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/bin:/sbin:/usr/local/share/npm/bin:/usr/local/go/bin:/opt/local/bin:$GOBIN:$HOME/.cargo/bin:$GCLOUD_PATH/bin:$HOME/.anyenv/bin:$PATH"
 
     export ZPLUG_HOME=$HOME/.zplug
 
@@ -271,10 +272,6 @@ if [ -z $ZSH_LOADED ]; then
     }
     add-zsh-hook precmd _update_vcs_info_msg
 
-    if type starship >/dev/null 2>&1; then
-        eval "$(starship init zsh)"
-    fi
-
     ########################################
     # オプション
     setopt auto_cd         # ディレクトリ名だけでcdする
@@ -354,11 +351,17 @@ if [ -z $ZSH_LOADED ]; then
     fi
 
     if type git >/dev/null 2>&1; then
-        alias gco="git checkout"
-        alias gsta="git status"
-        alias gcom="git commit -m"
-        alias gdiff="git diff"
-        alias gbra="git branch"
+        alias gd='git diff'
+        alias ga='git add'
+        alias gcm='git commit -m'
+        alias gp='git push origin'
+        alias gs='git stash'
+        alias gb='git branch'
+        # alias gco="git checkout"
+        # alias gsta="git status"
+        # alias gcom="git commit -m"
+        # alias gdiff="git diff"
+        # alias gbra="git branch"
         gitthisrepo() {
             git symbolic-ref --short HEAD | tr -d "\n"
         }
@@ -475,6 +478,12 @@ if [ -z $ZSH_LOADED ]; then
     alias ,,,,='\cd ../../../'
     alias ,,,,,='cd ../../../../'
     alias ,,,,,,='\cd ../../../../../'
+    alias cddev='mkcd $HOME/Documents/develop'
+    alias cdgo='mkcd $HOME/Documents/develop/go'
+    alias cddot='mkcd $HOME/Documents/develop/dotfiles'
+    alias cdcy='mkcd $HOME/Documents/develop/go/src/github.com/CyberAgent'
+    alias cdca='mkcd $HOME/Documents/develop/ca'
+    alias cdmayu='mkcd $HOME/Documents/develop/go/src/github.com/mayusy'
 
     if type fzf >/dev/null 2>&1; then
         if type fzf-tmux >/dev/null 2>&1; then
@@ -517,7 +526,7 @@ if [ -z $ZSH_LOADED ]; then
             rg "Host " $HOME/.ssh/config | awk '{print $2}' | rg -v "\*"
         }
         alias sshls=sshls
-        alias sshinit="rm -rf $HOME/.ssh/known_hosts;rm -rf $HOME/.ssh/master_kpango@192.168.2.*;chmod 600 $HOME/.ssh/config"
+        alias sshinit="rm -rf $HOME/.ssh/known_hosts;chmod 600 $HOME/.ssh/config"
     fi
 
     if type rails >/dev/null 2>&1; then
@@ -699,7 +708,7 @@ if [ -z $ZSH_LOADED ]; then
 
     if type kubectl >/dev/null 2>&1; then
         kubectl() {
-        local kubectl="$(whence -p kubectl 2> /dev/null)"
+            local kubectl="$(whence -p kubectl 2> /dev/null)"
             [ -z "$_lazy_kubectl_completion" ] && {
                 source <("$kubectl" completion zsh)
                 complete -o default -F __start_kubectl k
@@ -709,6 +718,8 @@ if [ -z $ZSH_LOADED ]; then
         }
         # alias kubectl=kubectl
         alias k=kubectl
+        alias kctx="kubectx"
+        alias kns="kubens"
         alias kpall="k get pods --all-namespaces -o wide"
         alias ksall="k get svc --all-namespaces -o wide"
         alias kiall="k get ingress --all-namespaces -o wide"
@@ -726,6 +737,19 @@ if [ -z $ZSH_LOADED ]; then
             }
             alias kind=kind
         fi
+    fi
+
+    if type gcloud >/dev/null 2>&1; then
+      gcloud() {
+          local gcloud="$(whence -p gcloud 2>/dev/null)"
+          [ -z "$_lazy_gcloud_completion" ] && {
+              source '/Users/s02827/google-cloud-sdk/path.zsh.inc'
+              source '/Users/s02827/google-cloud-sdk/completion.zsh.inc'
+              lazy_gcloud_completion=1
+          }
+          "$gcloud" "$@"
+      }
+      alias gcloud=gcloud
     fi
 
     if type htop >/dev/null 2>&1; then
@@ -784,33 +808,6 @@ if [ -z $ZSH_LOADED ]; then
             compton --config $HOME/.config/compton/compton.conf --xrender-sync-fence -cb
         }
         alias comprestart=comprestart
-    fi
-    if type yay >/dev/null 2>&1; then
-        archback() {
-            sudo chmod -R 777 $HOME/go/src/github.com/kpango/dotfiles/arch/pkg.list
-            sudo chmod -R 777 $HOME/go/src/github.com/kpango/dotfiles/arch/aur.list
-            pacman -Qqen > $HOME/go/src/github.com/kpango/dotfiles/arch/pkg.list
-            pacman -Qqem > $HOME/go/src/github.com/kpango/dotfiles/arch/aur.list
-        }
-        alias archback=archback
-        archup() {
-            sudo rm -rf /var/lib/pacman/db.lck
-            if type reflector >/dev/null 2>&1; then
-                sudo reflector --age 24 --latest 200 --number 20 --threads $CPUCORES --protocol http --protocol https --sort rate --save /etc/pacman.d/mirrorlist
-            fi
-            sudo rm -rf /var/lib/pacman/db.lck
-            git clone https://aur.archlinux.org/yay.git
-            cd yay
-            makepkg -si --noconfirm
-            cd ..
-            sudo rm -rf ./yay
-            sudo rm -rf /var/lib/pacman/db.lck
-            yay -Syu --noanswerdiff --noanswerclean --noconfirm
-            sudo rm -rf /var/lib/pacman/db.lck
-            paccache -ruk0
-        }
-        alias archup=archup
-
     fi
 
     if type vcs_info >/dev/null 2>&1; then

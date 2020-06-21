@@ -1,4 +1,4 @@
-FROM kpango/dev-base:latest AS go-base
+FROM mayusy/dev-base:latest AS go-base
 
 ENV GO111MODULE on
 ENV DEBIAN_FRONTEND noninteractive

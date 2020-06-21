@@ -1,12 +1,12 @@
-FROM kpango/go:latest AS go
+FROM mayusy/go:latest AS go
 
 FROM kpango/rust:latest AS rust
 
-FROM kpango/nim:latest AS nim
+FROM mayusy/nim:latest AS nim
 
-FROM kpango/dart:latest AS dart
+FROM mayusy/dart:latest AS dart
 
-FROM kpango/docker:latest AS docker
+FROM mayusy/docker:latest AS docker
 
 # FROM node:13-alpine AS node
 
@@ -31,15 +31,15 @@ FROM kpango/docker:latest AS docker
 # RUN gem install neovim -no-ri-no-rdoc
 # RUN apk del .build-deps gcc musl-dev
 
-FROM kpango/kube:latest AS kube
+FROM mayusy/kube:latest AS kube
 
-FROM kpango/gcloud:latest AS gcloud
+FROM mayusy/gcloud:latest AS gcloud
 
-FROM kpango/env:latest AS env
+FROM mayusy/env:latest AS env
 
 FROM env
 
-LABEL maintainer="kpango <i.can.feel.gravity@gmail.com>"
+LABEL maintainer="mayusy <i.can.feel.gravity@gmail.com>"
 
 ENV TZ Asia/Tokyo
 ENV HOME /root

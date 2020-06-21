@@ -1,4 +1,4 @@
-FROM kpango/dev-base:latest AS docker-base
+FROM mayusy/dev-base:latest AS docker-base
 
 FROM aquasec/trivy:latest AS trivy
 

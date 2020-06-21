@@ -4,7 +4,7 @@
 
 brew install wget
 
-curl -fsSLO https://raw.githubusercontent.com/kpango/dotfiles/master/macos/Brewfile
+curl -fsSLO https://raw.githubusercontent.com/mayusy/dotfiles/master/macos/Brewfile
 brew bundle --file Brewfile
 rm -rf Brewfile
 
@@ -40,7 +40,7 @@ cat <<EOF >$HOME/.docker/daemon.json
 }
 EOF
 
-curl -fsSLO https://raw.githubusercontent.com/kpango/dotfiles/master/macos/monokai.terminal
+curl -fsSLO https://raw.githubusercontent.com/mayusy/dotfiles/master/macos/monokai.terminal
 open monokai.terminal
 rm -rf monokai.terminal
 

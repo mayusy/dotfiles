@@ -8,7 +8,6 @@ run:
 link:
 	mkdir -p ${HOME}/.config/nvim/colors
 	mkdir -p ${HOME}/.config/nvim/syntax
-	mkdir -p ${HOME}/.config/TabNine
 	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))alias $(HOME)/.aliases
 	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))coc-settings.json $(HOME)/.config/nvim/coc-settings.json
 	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))editorconfig $(HOME)/.editorconfig
@@ -20,79 +19,17 @@ link:
 	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))go.vim $(HOME)/.config/nvim/syntax/go.vim
 	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))init.vim $(HOME)/.config/nvim/init.vim
 	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))monokai.vim $(HOME)/.config/nvim/colors/monokai.vim
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))starship.toml $(HOME)/.config/starship.toml
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))tabnine_config.json $(HOME)/.config/TabNine/tabnine_config.json
 	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))tmux-kube $(HOME)/.tmux-kube
 	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))tmux.conf $(HOME)/.tmux.conf
 	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))tmux.new-session $(HOME)/.tmux.new-session
 	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))zshrc $(HOME)/.zshrc
 
-arch_link: \
-	clean \
-	link
-	mkdir -p ${HOME}/.config/alacritty
-	mkdir -p ${HOME}/.config/fcitx/conf
-	mkdir -p ${HOME}/.config/sway
-	mkdir -p ${HOME}/.config/waybar
-	mkdir -p ${HOME}/.config/wofi
-	mkdir -p ${HOME}/.config/workstyle
-	mkdir -p ${HOME}/.docker
-	mkdir -p /etc/docker
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/Xmodmap $(HOME)/.Xmodmap
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/alacritty.yml $(HOME)/.config/alacritty/alacritty.yml
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/fcitx-classic-ui.config $(HOME)/.config/fcitx/conf/fcitx-classic-ui.config
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/gitconfig $(HOME)/.gitconfig
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/ranger $(HOME)/.config/ranger
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/sway.conf $(HOME)/.config/sway/config
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/waybar.conf $(HOME)/.config/waybar/config
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/waybar.css $(HOME)/.config/waybar/style.css
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/wofi/style.css $(HOME)/.config/wofi/style.css
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/wofi/wofi.conf $(HOME)/.config/wofi/config
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/workstyle.toml $(HOME)/.config/workstyle/config.toml
-	ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/xinitrc $(HOME)/.xinitrc
-	sudo cp $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/chrony.conf /etc/chrony.conf
-	sudo cp $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/xinitrc /etc/environment
-	sudo cp $(dir $(abspath $(lastword $(MAKEFILE_LIST))))network/NetworkManager-dispatcher.service /etc/systemd/system/NetworkManager-dispatcher.service
-	sudo cp $(dir $(abspath $(lastword $(MAKEFILE_LIST))))network/nmcli-wifi-eth-autodetect.sh /etc/NetworkManager/dispatcher.d/nmcli-wifi-eth-autodetect.sh
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/60-ioschedulers.rules /etc/udev/rules.d/60-ioschedulers.rules
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/limits.conf /etc/security/limits.conf
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/modules-load.d/bbr.conf /etc/modules-load.d/bbr.conf
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/suduers /etc/sudoers.d/kpango
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/sway.sh /etc/profile.d/sway.sh
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))arch/xinitrc /etc/profile.d/fcitx.sh
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))dockers/config.json $(HOME)/.docker/config.json
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))dockers/config.json /etc/docker/config.json
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))dockers/daemon.json $(HOME)/.docker/daemon.json
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))dockers/daemon.json /etc/docker/daemon.json
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))network/NetworkManager.conf /etc/NetworkManager/NetworkManager.conf
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))network/dnsmasq.conf /etc/NetworkManager/dnsmasq.d/dnsmasq.conf
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))network/resolv.dnsmasq.conf /etc/resolv.dnsmasq.conf
-	sudo ln -sfv $(dir $(abspath $(lastword $(MAKEFILE_LIST))))network/sysctl.conf /etc/sysctl.conf
-	sudo chmod a+x /etc/NetworkManager/dispatcher.d/nmcli-wifi-eth-autodetect.sh
-	sudo chown root:root /etc/NetworkManager/dispatcher.d/nmcli-wifi-eth-autodetect.sh
-	sudo sysctl -p
-	sudo systemctl daemon-reload
-
 clean:
 	# sed -e "/\[\ \-f\ \$HOME\/\.aliases\ \]\ \&\&\ source\ \$HOME\/\.aliases/d" ~/.bashrc
 	# sed -e "/\[\ \-f\ \$HOME\/\.aliases\ \]\ \&\&\ source\ \$HOME\/\.aliases/d" ~/.zshrc
 	sudo rm -rf \
-		$(HOME)/.Xdefaults \
-		$(HOME)/.Xmodmap \
 		$(HOME)/.aliases \
-		$(HOME)/.config/TabNine \
-		$(HOME)/.config/alacritty \
-		$(HOME)/.config/compton \
-		$(HOME)/.config/fcitx \
-		$(HOME)/.config/i3 \
-		$(HOME)/.config/i3status \
 		$(HOME)/.config/nvim \
-		$(HOME)/.config/ranger \
-		$(HOME)/.config/starship.toml \
-		$(HOME)/.config/sway \
-		$(HOME)/.config/waybar \
-		$(HOME)/.config/wofi \
-		$(HOME)/.config/workstyle \
 		$(HOME)/.docker/config.json \
 		$(HOME)/.docker/daemon.json \
 		$(HOME)/.editorconfig \
@@ -103,25 +40,9 @@ clean:
 		$(HOME)/.tmux-kube \
 		$(HOME)/.tmux.conf \
 		$(HOME)/.tmux.new-session \
-		$(HOME)/.xinitrc \
 		$(HOME)/.zshrc \
-		/etc/NetworkManager/NetworkManager.conf \
-		/etc/NetworkManager/dispatcher.d/nmcli-wifi-eth-autodetect.sh \
-		/etc/NetworkManager/dnsmasq.d/dnsmasq.conf \
-		/etc/chrony.conf \
-		/etc/dbus-1/system.d/pulseaudio-bluetooth.conf \
 		/etc/docker/config.json \
-		/etc/docker/daemon.json \
-		/etc/environment \
-		/etc/lightdm \
-		/etc/modules-load.d/bbr.conf \
-		/etc/profile.d/fcitx.sh \
-		/etc/profile.d/sway.sh \
-		/etc/sudoers.d/kpango \
-		/etc/sysctl.conf \
-		/etc/systemd/system/NetworkManager-dispatcher.service \
-		/etc/systemd/system/pulseaudio.service \
-		/etc/udev/rules.d/60-ioschedulers.rules
+		/etc/docker/daemon.json
 
 zsh: link
 	[ -f $(HOME)/.zshrc ] && echo "[ -f $$HOME/.aliases ] && source $$HOME/.aliases" >> $(HOME)/.zshrc
@@ -139,64 +60,64 @@ docker_push:
 	docker push ${IMAGE_NAME}:latest
 
 prod_build:
-	@make DOCKERFILE="./Dockerfile" IMAGE_NAME="kpango/dev" docker_build
+	@make DOCKERFILE="./Dockerfile" IMAGE_NAME="mayusy/dev" docker_build
 
 build_go:
-	@make DOCKERFILE="./dockers/go.Dockerfile" IMAGE_NAME="kpango/go" docker_build
+	@make DOCKERFILE="./dockers/go.Dockerfile" IMAGE_NAME="mayusy/go" docker_build
 
 build_rust:
-	@make DOCKERFILE="./dockers/rust.Dockerfile" IMAGE_NAME="kpango/rust" docker_build
+	@make DOCKERFILE="./dockers/rust.Dockerfile" IMAGE_NAME="mayusy/rust" docker_build
 
 build_nim:
-	@make DOCKERFILE="./dockers/nim.Dockerfile" IMAGE_NAME="kpango/nim" docker_build
+	@make DOCKERFILE="./dockers/nim.Dockerfile" IMAGE_NAME="mayusy/nim" docker_build
 
 build_dart:
-	@make DOCKERFILE="./dockers/dart.Dockerfile" IMAGE_NAME="kpango/dart" docker_build
+	@make DOCKERFILE="./dockers/dart.Dockerfile" IMAGE_NAME="mayusy/dart" docker_build
 
 build_docker:
-	@make DOCKERFILE="./dockers/docker.Dockerfile" IMAGE_NAME="kpango/docker" docker_build
+	@make DOCKERFILE="./dockers/docker.Dockerfile" IMAGE_NAME="mayusy/docker" docker_build
 
 build_base:
-	@make DOCKERFILE="./dockers/base.Dockerfile" IMAGE_NAME="kpango/dev-base" docker_build
+	@make DOCKERFILE="./dockers/base.Dockerfile" IMAGE_NAME="mayusy/dev-base" docker_build
 
 build_env:
-	@make DOCKERFILE="./dockers/env.Dockerfile" IMAGE_NAME="kpango/env" docker_build
+	@make DOCKERFILE="./dockers/env.Dockerfile" IMAGE_NAME="mayusy/env" docker_build
 
 build_gcloud:
-	@make DOCKERFILE="./dockers/gcloud.Dockerfile" IMAGE_NAME="kpango/gcloud" docker_build
+	@make DOCKERFILE="./dockers/gcloud.Dockerfile" IMAGE_NAME="mayusy/gcloud" docker_build
 
 build_k8s:
-	@make DOCKERFILE="./dockers/k8s.Dockerfile" IMAGE_NAME="kpango/kube" docker_build
+	@make DOCKERFILE="./dockers/k8s.Dockerfile" IMAGE_NAME="mayusy/kube" docker_build
 
 prod_push:
-	@make IMAGE_NAME="kpango/dev" docker_push
+	@make IMAGE_NAME="mayusy/dev" docker_push
 
 push_go:
-	@make IMAGE_NAME="kpango/go" docker_push
+	@make IMAGE_NAME="mayusy/go" docker_push
 
 push_rust:
-	@make IMAGE_NAME="kpango/rust" docker_push
+	@make IMAGE_NAME="mayusy/rust" docker_push
 
 push_nim:
-	@make IMAGE_NAME="kpango/nim" docker_push
+	@make IMAGE_NAME="mayusy/nim" docker_push
 
 push_dart:
-	@make IMAGE_NAME="kpango/dart" docker_push
+	@make IMAGE_NAME="mayusy/dart" docker_push
 
 push_docker:
-	@make IMAGE_NAME="kpango/docker" docker_push
+	@make IMAGE_NAME="mayusy/docker" docker_push
 
 push_base:
-	@make IMAGE_NAME="kpango/dev-base" docker_push
+	@make IMAGE_NAME="mayusy/dev-base" docker_push
 
 push_env:
-	@make IMAGE_NAME="kpango/env" docker_push
+	@make IMAGE_NAME="mayusy/env" docker_push
 
 push_gcloud:
-	@make IMAGE_NAME="kpango/gcloud" docker_push
+	@make IMAGE_NAME="mayusy/gcloud" docker_push
 
 push_k8s:
-	@make IMAGE_NAME="kpango/kube" docker_push
+	@make IMAGE_NAME="mayusy/kube" docker_push
 
 build_all: \
 	build_base \
@@ -224,16 +145,16 @@ push_all: \
 
 profile:
 	rm -f analyze.txt
-	type dlayer >/dev/null 2>&1 && docker save kpango/dev:latest | dlayer >> analyze.txt
+	type dlayer >/dev/null 2>&1 && docker save mayusy/dev:latest | dlayer >> analyze.txt
 
 login:
-	docker login -u kpango
+	docker login -u mayusy
 
 push:
-	docker push kpango/dev:latest
+	docker push mayusy/dev:latest
 
 pull:
-	docker pull kpango/dev:latest
+	docker pull mayusy/dev:latest
 
 perm:
 	chmod -R 755 ./*

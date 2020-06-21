@@ -1,4 +1,4 @@
-FROM kpango/dev-base:latest AS kube-base
+FROM mayusy/dev-base:latest AS kube-base
 
 ENV ARCH amd64
 ENV OS linux

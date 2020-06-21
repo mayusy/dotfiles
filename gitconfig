@@ -82,8 +82,7 @@
 [gpg]
     program = gpg
 [user]
-    name = kpango
-    email = "i.can.feel.gravity@gmail.com"
-    signingkey = "F1138C4D7C781619"
+    name = mayusy
+    email = "yamamoto_mayu@cyberagent.co.jp"
 [ghq]
     root = /go/src

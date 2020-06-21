@@ -1,3 +1,0 @@
-## sudoers permissions
-
-kpango ALL=(ALL)NOPASSWD:/usr/bin/light,/usr/bin/yay,/usr/bin/pacman,/usr/bin/sway
