@@ -48,7 +48,7 @@ if [ -z $DOTENV_LOADED ]; then
 
     export XDG_CONFIG_HOME=$HOME/.config
 
-    export GCLOUD_PATH="/google-cloud-sdk"
+    export GCLOUD_PATH="/usr/lib/google-cloud-sdk"
 
     export PYTHON_CONFIGURE_OPTS="--enable-shared"
     export CLOUDSDK_PYTHON_SITEPACKAGES=1
@@ -479,11 +479,11 @@ if [ -z $ZSH_LOADED ]; then
     alias ,,,,,='cd ../../../../'
     alias ,,,,,,='\cd ../../../../../'
     alias cddev='mkcd $HOME/Documents/develop'
-    alias cdgo='mkcd $HOME/Documents/develop/go'
+    alias cdgo='mkcd $HOME/go'
     alias cddot='mkcd $HOME/Documents/develop/dotfiles'
-    alias cdcy='mkcd $HOME/Documents/develop/go/src/github.com/CyberAgent'
+    alias cdcy='mkcd $HOME/go/src/github.com/CyberAgent'
     alias cdca='mkcd $HOME/Documents/develop/ca'
-    alias cdmayu='mkcd $HOME/Documents/develop/go/src/github.com/mayusy'
+    alias cdmayu='mkcd $HOME/go/src/github.com/mayusy'
 
     if type fzf >/dev/null 2>&1; then
         if type fzf-tmux >/dev/null 2>&1; then
@@ -568,6 +568,9 @@ if [ -z $ZSH_LOADED ]; then
         if [ -f /.dockerenv ]; then
             tmux unbind C-b
             tmux set -g prefix C-w
+        else
+            tmux bind-key -T copy-mode-vi 'y' send-keys -X copy-pipe-and-cancel "pbcopy"
+            tmux bind-key 'p' run-shell "tmux set-buffer "$(pbpaste)"; tmux paste-buffer"
         fi
     fi
     alias tedit="$EDITOR $HOME/.tmux.conf"
@@ -743,8 +746,8 @@ if [ -z $ZSH_LOADED ]; then
       gcloud() {
           local gcloud="$(whence -p gcloud 2>/dev/null)"
           [ -z "$_lazy_gcloud_completion" ] && {
-              source '/Users/s02827/google-cloud-sdk/path.zsh.inc'
-              source '/Users/s02827/google-cloud-sdk/completion.zsh.inc'
+              source ${GOPATH}/src/github.com/mayusy/dotfiles/path.zsh.inc
+              source ${GOPATH}/src/github.com/mayusy/dotfiles/completion.zsh.inc
               lazy_gcloud_completion=1
           }
           "$gcloud" "$@"
