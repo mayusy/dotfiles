@@ -48,7 +48,11 @@ if [ -z $DOTENV_LOADED ]; then
 
     export XDG_CONFIG_HOME=$HOME/.config
 
-    export GCLOUD_PATH="/usr/lib/google-cloud-sdk"
+    if [ -f /.dockerenv ]; then
+    	export GCLOUD_PATH="/usr/lib/google-cloud-sdk"
+    else
+    	export GCLOUD_PATH="/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk"
+    fi
 
     export PYTHON_CONFIGURE_OPTS="--enable-shared"
     export CLOUDSDK_PYTHON_SITEPACKAGES=1
@@ -753,6 +757,17 @@ if [ -z $ZSH_LOADED ]; then
           "$gcloud" "$@"
       }
       alias gcloud=gcloud
+      gcloudlogin() {
+          if [ $# -eq 2 ]; then
+              gcloud auth login --no-launch-browser
+              gcloud config set project $1
+              gcloud container clusters get-credentials $2 --zone asia-northeast1-a
+              gcloud auth configure-docker
+          else
+              echo "project name & cluster name are required => gcloudlogin ${PROJECT} ${CLUSTER_NAME}"
+          fi
+      }
+      alias gcloudlogin=gcloudlogin
     fi
 
     if type htop >/dev/null 2>&1; then

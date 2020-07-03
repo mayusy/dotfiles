@@ -22,7 +22,7 @@ alias kpmove="cd $rcpath"
 alias kpbuild="kpmove&&docker build --pull=true --file=$rcpath/Dockerfile -t kpango/dev:latest $rcpath"
 
 devrun(){
-    port_range="8000-9300"
+    port_range="8000-9000"
     privileged=true
     docker_daemon="$HOME/Library/Containers/com.docker.helper/Data/.docker/daemon.json"
     docker_config="$HOME/Library/Containers/com.docker.helper/Data/.docker/config.json"
